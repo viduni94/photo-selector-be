@@ -1,0 +1,23 @@
+{
+  "name": "photo-selector-be",
+  "version": "1.0.0",
+  "description": "Photo Selector Express App",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/viduni94/photo-selector-be.git"
+  },
+  "keywords": [
+    "Express",
+    "NodeJS"
+  ],
+  "author": "Viduni Wickramarachchi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/viduni94/photo-selector-be/issues"
+  },
+  "homepage": "https://github.com/viduni94/photo-selector-be#readme"
+}
