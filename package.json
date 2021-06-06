@@ -4,7 +4,10 @@
   "description": "Photo Selector Express App",
   "main": "index.js",
   "scripts": {
-    "start": "node ./bin/www",
+    "build": "npm run build:clean && mkdir dist && cross-env NODE_ENV=production babel src -d ./dist",
+    "build:clean": "rimraf ./dist",
+    "lint": "eslint --ignore-path .gitignore",
+    "start": "cross-env $NODE_DEBUG_OPTION NODE_ENV=development nodemon ./bin",
     "start-dev": "nodemon ./bin/www",
     "test": "test"
   },
@@ -13,8 +16,8 @@
     "url": "https://github.com/viduni94/photo-selector-be.git"
   },
   "keywords": [
-    "Express",
-    "NodeJS"
+    "expressjs",
+    "nodejs"
   ],
   "author": "Viduni Wickramarachchi",
   "license": "MIT",
@@ -23,15 +26,17 @@
   },
   "homepage": "https://github.com/viduni94/photo-selector-be#readme",
   "dependencies": {
+    "celebrate": "^14.0.0",
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
     "helmet": "^4.6.0",
     "http-errors": "^1.7.2",
     "http-status": "^1.5.0",
     "mongoose": "^5.12.13",
-    "morgan": "^1.10.0",
+    "pino": "^6.11.3",
     "swagger-jsdoc": "^6.1.0",
-    "swagger-ui-express": "^4.1.6"
+    "swagger-ui-express": "^4.1.6",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -56,6 +61,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "husky": "^6.0.0",
     "nodemon": "^2.0.7",
-    "prettier": "^2.3.1"
+    "prettier": "^2.3.1",
+    "rimraf": "^3.0.2"
   }
 }
