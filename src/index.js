@@ -50,7 +50,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(SwaggerSpec));
 app.use(errors());
 
 app.listen(port, function () {
-  console.log('Running Photo Selector BE\t: ' + `${SERVER_URL}:${port}`);
+  console.log('Running Photo Selector BE on\t: ' + `${SERVER_URL}:${port}`);
   console.log('API Documentation\t\t: ' + `${SERVER_URL}:${port}${SWAGGER_ENDPOINT}`);
 });
 
