@@ -1,5 +1,12 @@
-import { AsyncLocalStorage } from 'async_hooks';
+import log from './logger';
 
-const context = new AsyncLocalStorage();
+const setupContext = (req, res, next) => {
+  if (req.header['correlationid']) {
+    log.setContext({
+      correlationId: req.header['correlationid'],
+    });
+  }
+  next();
+};
 
-module.exports = context;
+export default setupContext;

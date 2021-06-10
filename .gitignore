@@ -3,3 +3,5 @@
 
 # misc
 .env
+.DS_Store
+src/.DS_Store

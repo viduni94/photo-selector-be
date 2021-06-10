@@ -38,7 +38,6 @@
     "newline-per-chained-call": "off",
     "no-alert": "warn",
     "no-confusing-arrow": "off",
-    "no-console": "warn",
     "no-duplicate-imports": [
       "error",
       {
