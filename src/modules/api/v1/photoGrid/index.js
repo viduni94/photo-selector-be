@@ -8,8 +8,8 @@ const photoGrid = express.Router();
 /**
  * @swagger
  * tags:
- *   - name: Photo Grid
- *     description: Manage photo grid
+ *   - name: [Photo-Grid]
+ *     description: Manage photo grid functionality
  */
 
 /**
