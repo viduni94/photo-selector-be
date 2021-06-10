@@ -53,3 +53,30 @@ export const getPhotoGrid = async () => {
     throw new Error(err);
   }
 };
+
+export const putPhotoGrid = async ({ photoGridId, authorId, entries }) => {
+  try {
+    const photoGridUpdateEntry = {
+      _id: photoGridId,
+      author_id: authorId,
+      entries,
+      updated_at: Date.now(),
+    };
+
+    const [error, response] = await to(PhotoGridModel.findOneAndUpdate({ _id: photoGridId }, photoGridUpdateEntry, { new: true }));
+    console.log("🚀 ~ file: service.js ~ line 67 ~ putPhotoGrid ~ response", response)
+
+    if (error) {
+      log(`[PHOTO-GRID] Updating photo grid failed | error: ${JSON.stringify(error)}`);
+      return sendErrorResponse(res, httpStatus.INTERNAL_SERVER_ERROR, {
+        error: 'INTERNAL_SERVER_ERROR',
+		    message: 'Something went wrong. try again',
+      });
+    }
+    log(`[PHOTO-GRID] Updating photo grid successfully | response: ${JSON.stringify(response)}`);
+    return response;
+  } catch (err) {
+    log(`[PHOTO-GRID] Updating photo grid failed | error: ${JSON.stringify(err)}`);
+    throw new Error(err);
+  }
+};
