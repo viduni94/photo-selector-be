@@ -1,55 +1,89 @@
 import httpStatus from 'http-status';
 import log from '../../../../utils/logger';
-import { to } from '../../../../utils/to';
-import { postPhotoGrid, getPhotoGrid, putPhotoGrid } from './service';
+import { handle } from '../../../../utils/handle';
+import PhotoGridModel from '../../../../models/photoGrid';
+import sendErrorResponse from '../../../../utils/sendErrorResponse';
 
 export const savePhotoGrid = async (req, res) => {
+  const { authorId, entries } = req.body;
+
   try {
-    const [postPhotoGridError, postPhotoGridResponse] = await to(postPhotoGrid(req.body));
-    if (postPhotoGridResponse) {
-      log('[PHOTO-GRID] Saving photo grid successful');
-      return res.status(httpStatus.OK).json(postPhotoGridResponse);
+    const photoGridEntry = new PhotoGridModel({
+      author_id: authorId,
+      entries,
+      created_at: Date.now(),
+    });
+
+    const [error, response] = await handle(photoGridEntry.save());
+
+    if (error) {
+      log(`[PHOTO-GRID] Inserting photo grid failed | error: ${JSON.stringify(error)}`);
+      return sendErrorResponse(res, httpStatus.INTERNAL_SERVER_ERROR, {
+        error: 'INTERNAL_SERVER_ERROR',
+		    message: 'Something went wrong. try again',
+      });
     }
-    log(`[PHOTO-GRID] Saving photo grid failed  | error: ${JSON.stringify(postPhotoGridError)}`);
-    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json(postPhotoGridError);
+    log(`[PHOTO-GRID] Photo grid inserted successfully | response: ${JSON.stringify(response)}`);
+    return res.status(httpStatus.OK).json(response);
   } catch (err) {
-    log(`[PHOTO-GRID] Saving photo grid failed  | error: ${JSON.stringify(err)}`);
+    log(`[PHOTO-GRID] Inserting photo grid failed | error: ${JSON.stringify(err)}`);
     throw new Error(err);
   }
 };
 
 export const fetchPhotoGrid = async (req, res) => {
   try {
-    const [fetchPhotoGridError, fetchPhotoGridResponse] = await to(getPhotoGrid());
+    const [error, response] = await handle(PhotoGridModel.find({}));
 
-    if (fetchPhotoGridError) {
-      log(`[PHOTO-GRID] Fetching photo grid failed  | error: ${JSON.stringify(fetchPhotoGridError)}`);
-      return res.status(httpStatus.INTERNAL_SERVER_ERROR).json(fetchPhotoGridError);
+    if (error) {
+      log(`[PHOTO-GRID] Retrieving photo grid failed | error: ${JSON.stringify(error)}`);
+      return sendErrorResponse(res, httpStatus.INTERNAL_SERVER_ERROR, {
+        error: 'INTERNAL_SERVER_ERROR',
+		    message: 'Something went wrong. try again',
+      });
     }
 
-    if (fetchPhotoGridResponse) {
-      log('[PHOTO-GRID] Fetching photo grid successful');
-      return res.status(httpStatus.OK).json(fetchPhotoGridResponse);
+    if (response && response.length > 0) {
+      log(`[PHOTO-GRID] Photo grid retrieved successfully | response: ${JSON.stringify(response)}`);
+      return res.status(httpStatus.OK).json(response);
+    } else {
+      log(`[PHOTO-GRID] Photo grid not found | response: ${JSON.stringify(response)}`);
+      return res.status(httpStatus.NO_CONTENT).json({ message: 'Photo grid not found' });
     }
-    log('[PHOTO-GRID] Fetching photo grid successful | Photo grid empty');
-    return res.status(httpStatus.NO_CONTENT).json();
   } catch (err) {
-    log(`[PHOTO-GRID] Fetching photo grid failed  | error: ${JSON.stringify(err)}`);
+    log(`[PHOTO-GRID] Retrieving photo grid failed | error: ${JSON.stringify(err)}`);
     throw new Error(err);
   }
 };
 
 export const updatePhotoGrid = async (req, res) => {
+  const { photoGridId, authorId, entries } = req.body;
   try {
-    const [updatePhotoGridError, updatePhotoGridResponse] = await to(putPhotoGrid(req.body));
-    if (updatePhotoGridResponse) {
-      log('[PHOTO-GRID] Updating photo grid successful');
-      return res.status(httpStatus.OK).json(updatePhotoGridResponse);
+    const photoGridUpdateEntry = {
+      _id: photoGridId,
+      author_id: authorId,
+      entries,
+      updated_at: Date.now(),
+    };
+
+    const [error, response] = await handle(PhotoGridModel.findOneAndUpdate({ _id: photoGridId }, photoGridUpdateEntry, { new: true }));
+
+    if (error) {
+      log(`[PHOTO-GRID] Updating photo grid failed | error: ${JSON.stringify(error)}`);
+      return sendErrorResponse(res, httpStatus.INTERNAL_SERVER_ERROR, {
+        error: 'INTERNAL_SERVER_ERROR',
+		    message: 'Something went wrong. try again',
+      });
     }
-    log(`[PHOTO-GRID] Updating photo grid failed  | error: ${JSON.stringify(updatePhotoGridError)}`);
-    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json(updatePhotoGridError);
+
+    if (response) {
+      log(`[PHOTO-GRID] Updating photo grid successful | response: ${JSON.stringify(response)}`);
+      return res.status(httpStatus.OK).json(response);
+    }
+    log(`[PHOTO-GRID] Photo grid not found | id: ${photoGridId}`);
+    return res.status(httpStatus.BAD_REQUEST).json({ photoGridId, message: 'Photo grid not found' });
   } catch (err) {
-    log(`[PHOTO-GRID] Updating photo grid failed  | error: ${JSON.stringify(err)}`);
+    log(`[PHOTO-GRID] Updating photo grid failed | error: ${JSON.stringify(err)}`);
     throw new Error(err);
   }
 };
