@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import helmet from 'helmet';
-import bodyParser from 'body-parser';
+import httpStatus from 'http-status';
 import logger from 'morgan';
 import swaggerUi from 'swagger-ui-express';
 import { errors } from 'celebrate';
@@ -43,7 +43,10 @@ app.use(cors());
 // Attach a unique request ID to every log line
 app.use(setContext);
 
-app.get('/health-check', (req, res) => res.status(200).end());
+app.get('/health-check', (req, res) => res.status(httpStatus.OK)
+  .json({ status: 200, message: 'Photo Selector BE running..' })
+  .end());
+
 app.use('/api/v1/photos-grid', photoGridV1Routes);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(SwaggerSpec));
 
