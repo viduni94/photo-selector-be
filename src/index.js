@@ -15,6 +15,8 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3001;
 const DB_URI = process.env.DB_URI;
+const SWAGGER_ENDPOINT = process.env.SWAGGER_ENDPOINT;
+const SERVER_URL = process.env.SERVER_URL;
 
 // Database connection
 mongoose.connect(DB_URI, {
@@ -48,7 +50,8 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(SwaggerSpec));
 app.use(errors());
 
 app.listen(port, function () {
-  console.log('Running Photo Selector BE on Port ' + port);
+  console.log('Running Photo Selector BE\t: ' + `${SERVER_URL}:${port}`);
+  console.log('API Documentation\t\t: ' + `${SERVER_URL}:${port}${SWAGGER_ENDPOINT}`);
 });
 
 export default app;

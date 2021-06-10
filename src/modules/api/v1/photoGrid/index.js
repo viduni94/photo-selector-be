@@ -7,13 +7,6 @@ const photoGrid = express.Router();
 
 /**
  * @swagger
- * tags:
- *   - name: [Photo-Grid]
- *     description: Manage photo grid functionality
- */
-
-/**
- * @swagger
  * /api/v1/photos-grid:
  *   post:
  *     description: Save photo grid
