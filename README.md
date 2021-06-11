@@ -12,8 +12,8 @@ Server application which uses ExpressJS to implement a server and database conne
 
 1. `git clone git@github.com:viduni94/photo-selector-be.git <YOUR_PROJECT_NAME>`
 2. `cd <YOUR_PROJECT_NAME>`
-3. `yarn`
-4. `yarn start`
+3. `npm install`
+4. `npm start`
 
 &nbsp;
 
