@@ -4,7 +4,7 @@
   </h1>
 </div>
 
-Server application which uses ExpressJS to implement a server and database connection for a photo selector application.
+Server application which uses ExpressJS to implement a server and database connection (MongoDB) for a photo selector application.
 
 &nbsp;
 
