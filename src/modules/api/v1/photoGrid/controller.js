@@ -4,6 +4,7 @@ import { handle } from '../../../../utils/handle';
 import PhotoGridModel from '../../../../models/photoGrid';
 import sendErrorResponse from '../../../../utils/sendErrorResponse';
 
+// Save photo grid to database
 export const savePhotoGrid = async (req, res) => {
   const { authorId, entries } = req.body;
 
@@ -31,6 +32,7 @@ export const savePhotoGrid = async (req, res) => {
   }
 };
 
+// Fetch saved photo grid from database
 export const fetchPhotoGrid = async (req, res) => {
   try {
     const [error, response] = await handle(PhotoGridModel.find({}));
@@ -56,6 +58,7 @@ export const fetchPhotoGrid = async (req, res) => {
   }
 };
 
+// Update photo grid with the newly selected photos
 export const updatePhotoGrid = async (req, res) => {
   const { photoGridId, authorId, entries } = req.body;
   try {

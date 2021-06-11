@@ -7,7 +7,7 @@ const PhotoGridSchema = new Schema({
 		require: true
   },
 	entries: {
-		type: Schema.Types.Map,
+		type: Schema.Types.Array,
 		require: true
 	},
 	created_at: {
